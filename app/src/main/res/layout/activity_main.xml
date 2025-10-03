@@ -52,7 +52,8 @@
             android:layout_height="48dp"
             android:ems="10"
             android:hint="Nome"
-            android:inputType="text" />
+            android:inputType="text"
+            android:text="Tiago Candido" />
 
         <Button
             android:id="@+id/btn_iniciar"
