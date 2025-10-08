@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -52,14 +53,36 @@ class PerguntasActivity : AppCompatActivity() {
 
         exibirPerguntaAtual()
         btnConfirmar.setOnClickListener {
-            indicePerguntaAtual++
-            exibirPerguntaAtual()
+
+            if ( validarRespostasPerguntaAtual() ){
+                indicePerguntaAtual++
+                exibirPerguntaAtual()
+            }else{
+
+            }
+
 
         }
 
-
-
         //Dados Mockados - ficticios
+
+    }
+
+    private fun validarRespostasPerguntaAtual() : Boolean {
+
+        val resposta01 = radioPergunta01.isChecked
+        val resposta02 = radioPergunta02.isChecked
+        val resposta03 = radioPergunta03.isChecked
+        
+        if( resposta01 || resposta02 || resposta03 ){
+            radioGroupPerguntas.clearCheck()
+            return true
+        }
+
+        Toast.makeText(this, "Selecione uma resposta para avançar", Toast.LENGTH_SHORT).show()
+        return false
+
+        //textContadorPerguntas.text = "R01: $resposta01 R02: $resposta02 R03: $resposta03"
 
     }
 
