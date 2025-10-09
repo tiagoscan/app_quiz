@@ -1,5 +1,6 @@
 package com.mentoriaandroid.appquiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Radio
 import android.widget.Button
@@ -29,6 +30,7 @@ class PerguntasActivity : AppCompatActivity() {
     private lateinit var listaPerguntas: Array<Pergunta>
 
     private var indicePerguntaAtual = 1
+    private var totalRespostasCorretas = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,17 +57,49 @@ class PerguntasActivity : AppCompatActivity() {
         btnConfirmar.setOnClickListener {
 
             if ( validarRespostasPerguntaAtual() ){
+                verificarRespostaCerta()
                 indicePerguntaAtual++
-                exibirPerguntaAtual()
-            }else{
 
+                //Verifico se já foi preenchido tudo
+                val totalItensLista = listaPerguntas.size
+                if( indicePerguntaAtual <= totalItensLista ){
+
+                    exibirPerguntaAtual()
+
+                }else{//Terminaram as perguntas
+
+                    val intent = Intent(this, DetalhesActivity::class.java)
+                    intent.putExtra("total_respostas_corretas", totalRespostasCorretas)
+                    startActivity( intent )
+                    finish()
+                }
             }
+        }
 
+    }
+
+    private fun verificarRespostaCerta() {
+        val pergunta = listaPerguntas[ indicePerguntaAtual - 1 ]
+        val respostaCerta = pergunta.respostaCerta
+
+        var respostaSelecionada = if ( radioPergunta01.isChecked ){
+            1
+        } else if ( radioPergunta02.isChecked ){
+            2
+        }else if ( radioPergunta03.isChecked ){
+            3
+        }else{
+            0
+        }
+
+
+        if ( respostaSelecionada == respostaCerta ){
+            totalRespostasCorretas++
 
         }
 
-        //Dados Mockados - ficticios
-
+        //limpo o que foi selecionado
+        radioGroupPerguntas.clearCheck()
     }
 
     private fun validarRespostasPerguntaAtual() : Boolean {
@@ -75,7 +109,7 @@ class PerguntasActivity : AppCompatActivity() {
         val resposta03 = radioPergunta03.isChecked
         
         if( resposta01 || resposta02 || resposta03 ){
-            radioGroupPerguntas.clearCheck()
+
             return true
         }
 
@@ -92,6 +126,11 @@ class PerguntasActivity : AppCompatActivity() {
         radioPergunta01.text = perguntaAtual.resposta01
         radioPergunta02.text = perguntaAtual.resposta02
         radioPergunta03.text = perguntaAtual.resposta03
+
+        //Exibir dados do contador
+        //val contadorPerguntaAtual = perguntaAtual.codigo
+        val totalPerguntas = listaPerguntas.size
+        textContadorPerguntas.text = "$indicePerguntaAtual pergunta de $totalPerguntas"
     }
 
     private fun inicializar() {

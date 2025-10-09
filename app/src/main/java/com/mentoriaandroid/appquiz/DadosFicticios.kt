@@ -33,8 +33,14 @@ class DadosFicticios {
                 3
             )
 
+            val pergunta5 = Pergunta(
+                4, "5) Onde Jamilton nasceu?",
+                "São Paulo", "Ceará", "Minas Gerais",
+                2
+            )
+
             return arrayOf(
-                pergunta1, pergunta2, pergunta3, pergunta4
+                pergunta1, pergunta2, pergunta3, pergunta4, pergunta5
             )
 
         }
